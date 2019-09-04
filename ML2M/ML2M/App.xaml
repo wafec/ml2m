@@ -1,0 +1,11 @@
+﻿<Application x:Class="ML2M.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:ML2M"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <FontFamily x:Key="Rodina">pack://application:,,,/Fonts/#Rodina</FontFamily>
+        <FontFamily x:Key="SkolaSans">pack://application:,,,/Fonts/#SkolaSans</FontFamily>
+        <FontFamily x:Key="Aleo">pack://application:,,,/Fonts/#Aleo</FontFamily>
+    </Application.Resources>
+</Application>
