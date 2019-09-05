@@ -53,13 +53,30 @@ namespace ML2M.Model
 
         private static string GetDefaultSettingsPath()
         {
-            return Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "Data"), "Settings.json");
+            var dataPath = Path.Combine(Directory.GetCurrentDirectory(), "Data");
+            if (!Directory.Exists(dataPath))
+                Directory.CreateDirectory(dataPath);
+            return Path.Combine(dataPath, "Settings.json");
         }
 
         public void Save()
         {
             string settingsContent = JsonConvert.SerializeObject(this, Formatting.Indented);
             File.WriteAllText(GetDefaultSettingsPath(), settingsContent);
+        }
+
+        private void CreateVideosPath()
+        {
+            this.VideosPath = Path.Combine(Directory.GetCurrentDirectory(), "Videos");
+            if (!Directory.Exists(this.VideosPath))
+                Directory.CreateDirectory(this.VideosPath);
+        }
+
+        private void CreateLyricsPath()
+        {
+            this.LyricsPath = Path.Combine(Directory.GetCurrentDirectory(), "Lyrics");
+            if (!Directory.Exists(this.LyricsPath))
+                Directory.CreateDirectory(this.LyricsPath);
         }
 
         public static ResourceConfiguration CreateInstance()
@@ -69,14 +86,17 @@ namespace ML2M.Model
             if (File.Exists(settingsPath))
             {
                 resourceConfiguration = JsonConvert.DeserializeObject<ResourceConfiguration>(File.ReadAllText(settingsPath));
+                if (!resourceConfiguration.IsLyricsPathValid())
+                    resourceConfiguration.CreateLyricsPath();
+                if (!resourceConfiguration.IsVideosPathValid())
+                    resourceConfiguration.CreateVideosPath();
             }
             else
-            { 
-                resourceConfiguration.LyricsPath = Path.Combine(Directory.GetCurrentDirectory(), "Lyrics");
-                resourceConfiguration.VideosPath = Path.Combine(Directory.GetCurrentDirectory(), "Videos");
-
-                resourceConfiguration.Save();
+            {
+                resourceConfiguration.CreateLyricsPath();
+                resourceConfiguration.CreateVideosPath();
             }
+            resourceConfiguration.Save();
             return resourceConfiguration;
         }
     }

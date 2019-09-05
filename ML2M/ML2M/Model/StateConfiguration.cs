@@ -16,7 +16,10 @@ namespace ML2M.Model
 
         private static string GetCurrentStateConfigurationPath()
         {
-            return Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "Data"), "States.json");
+            var dataPath = Path.Combine(Directory.GetCurrentDirectory(), "Data");
+            if (!Directory.Exists(dataPath))
+                Directory.CreateDirectory(dataPath);
+            return Path.Combine(dataPath, "States.json");
         }
 
         public void Save()

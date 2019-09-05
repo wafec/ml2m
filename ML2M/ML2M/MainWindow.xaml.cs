@@ -282,5 +282,10 @@ namespace ML2M
             var songItem = ((FrameworkElement)sender).DataContext as SongItem;
             PresentationController.GoToByKey(songItem.Key);
         }
+
+        private void HandleSairClick(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

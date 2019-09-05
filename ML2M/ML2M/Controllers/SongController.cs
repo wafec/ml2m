@@ -19,6 +19,7 @@ namespace ML2M.Controllers
                 List<SongItem> items = new List<SongItem>();
                 char? lastUsedKey = null;
                 string lastVerseTip = null;
+                char pKey = 'A';
                 for (int i = 0; i < lyricLines.Length; i++)
                 {
                     var lyricLine = lyricLines[i];
@@ -49,7 +50,7 @@ namespace ML2M.Controllers
                             {
                                 SongItem item = new SongItem();
                                 item.Line = i;
-                                item.Key = lastUsedKey ?? 'G';
+                                lastUsedKey = item.Key = lastUsedKey ?? pKey++;
                                 item.VerseTip = lastVerseTip ?? "";
                                 item.Verse = lyricLine;
 

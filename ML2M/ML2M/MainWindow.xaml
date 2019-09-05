@@ -15,7 +15,7 @@
                 <MenuItem Header="Configurações" />
                 <MenuItem Header="Atualizar Dispositivo" Click="HandleAtualizarDispositivoClick" />
                 <Separator />
-                <MenuItem Header="Sair" />
+                <MenuItem Header="Sair" Click="HandleSairClick" />
             </MenuItem>
             <MenuItem Header="Ajuda">
                 <MenuItem Header="Sobre" />
