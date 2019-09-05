@@ -19,5 +19,16 @@ namespace ML2M.Model
             };
             return songListItem;
         }
+
+        public bool AreSame(SongListItem other)
+        {
+            if (other == null)
+                return false;
+            if (Song == null)
+                return false;
+            if (other.Song == null)
+                return false;
+            return other.Song.Name == Song.Name && other.Song.Album == Song.Album;
+        }
     }
 }

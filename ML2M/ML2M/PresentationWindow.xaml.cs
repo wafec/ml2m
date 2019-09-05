@@ -28,11 +28,13 @@ namespace ML2M
         public PlayingSong PlayingSong { get; private set; }
         public Uri MediaSource { get; set; }
         public List<string> CurrentVideoSelection { get; private set; }
+        public StateConfiguration StateConfiguration { get; private set; }
 
-        public PresentationWindow(IPresentationController presentationController, ResourceConfiguration resourceConfiguration)
+        public PresentationWindow(IPresentationController presentationController, ResourceConfiguration resourceConfiguration, StateConfiguration stateConfiguration)
         {
             PresentationController = presentationController;
             ResourceConfiguration = resourceConfiguration;
+            StateConfiguration = stateConfiguration;
             InitializeSettings();
             InitializeComponent();
             InitializeContexts();
@@ -169,6 +171,13 @@ namespace ML2M
                 PresentationController.Stop();
                 sbPresentation.Stop();
             }
+        }
+
+        private void Window_LocationChanged(object sender, EventArgs e)
+        {
+            StateConfiguration.PresentationWindowLeft = (int)Left;
+            StateConfiguration.PresentationWindowTop = (int)Top;
+            StateConfiguration.Save();
         }
     }
 }

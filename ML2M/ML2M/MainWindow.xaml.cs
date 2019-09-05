@@ -35,6 +35,8 @@ namespace ML2M
         public PresentationWindow PresentationWindow { get; private set; }
         public bool PresentationFullScreen { get; private set; }
         public bool PresentationHidden { get; private set; }
+        public MainProgressControl ProgressControl { get; set; }
+        public StateConfiguration StateConfiguration { get; private set; }
 
         public MainWindow()
         {
@@ -50,12 +52,41 @@ namespace ML2M
 
             PresentationController.Subscribe(this);
             PresentationController.SetKeyEvents(this);
+
+            ProgressControl = new MainProgressControl();
+            sbiProgress.DataContext = ProgressControl;
+
+            StateConfiguration = StateConfiguration.CreateInstance();
+            tbPesquisar.Text = StateConfiguration.Keywords ?? "";
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            SongList = new SongList(SongController.GetSongs(ResourceConfiguration).Select(s => SongListItem.CreateInstance(s)));
+            ProgressControl.Show("Carregando Dispositivo");
+            LoadSongListFromResource();
             ApplyMusicsToDataGrid();
+            ProgressControl.Hide("Dispositivo Pronto");
+        }
+
+        private void LoadSongListFromResource()
+        {
+            SongList = StateConfiguration.SongList;
+
+            var songList = new SongList(SongController.GetSongs(ResourceConfiguration).Select(s => SongListItem.CreateInstance(s)));
+            if (SongList != null)
+            {
+                foreach (var song in songList)
+                {
+                    var found = SongList.FirstOrDefault(s => s.AreSame(song));
+                    if (found != null)
+                    {
+                        song.Selected = found.Selected;
+                    }
+                }
+            }
+            SongList = songList;
+            StateConfiguration.SongList = SongList;
+            StateConfiguration.Save();
         }
 
         private void ShowResults(SongList itemsSource)
@@ -90,6 +121,8 @@ namespace ML2M
                 {
                     HideResults("Nenhuma música para a pesquisa feita.");
                 }
+                StateConfiguration.Keywords = keywords;
+                StateConfiguration.Save();
             }
             else
             {
@@ -116,6 +149,7 @@ namespace ML2M
         {
             SelectedSongsView = SongList.Where(s => s.Selected).ToSongList();
             lvSelecionadas.ItemsSource = SelectedSongsView;
+            StateConfiguration.Save();
         }
 
         private void HandleMostrarMusicaClick(object sender, RoutedEventArgs e)
@@ -128,8 +162,12 @@ namespace ML2M
                 dpPlayingSong.DataContext = PlayingSong;
                 if (PresentationWindow == null)
                 {
-                    PresentationWindow = new PresentationWindow(PresentationController, ResourceConfiguration);
+                    PresentationWindow = new PresentationWindow(PresentationController, ResourceConfiguration, StateConfiguration);
                     PresentationController.SetKeyEvents(PresentationWindow);
+                    StateConfiguration.UpdatePresentationWindowPosition(Left, Top, ActualWidth, ActualHeight,
+                        PresentationWindow.Width, PresentationWindow.Height);
+                    PresentationWindow.Left = StateConfiguration.PresentationWindowLeft;
+                    PresentationWindow.Top = StateConfiguration.PresentationWindowTop;
                     PresentationWindow.Show();
                 }
                 PresentationController.ChangeSong(PlayingSong);
@@ -228,6 +266,21 @@ namespace ML2M
         private void HandleTrocarVideoClick(object sender, RoutedEventArgs e)
         {
             PresentationController.ChangeBackgroundVideoRandomly();
+        }
+
+        private void HandleAtualizarDispositivoClick(object sender, RoutedEventArgs e)
+        {
+            ProgressControl.Show("Atualizando Dispositivo");
+            LoadSongListFromResource();
+            ApplyMusicsToDataGrid();
+            UpdateSelectedMusics();
+            ProgressControl.Hide("Dispositivo Atualizado");
+        }
+
+        private void HandleKeyClick(object sender, RoutedEventArgs e)
+        {
+            var songItem = ((FrameworkElement)sender).DataContext as SongItem;
+            PresentationController.GoToByKey(songItem.Key);
         }
     }
 }

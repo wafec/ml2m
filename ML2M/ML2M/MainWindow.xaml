@@ -7,11 +7,13 @@
         mc:Ignorable="d"
         Title="ML2M" Height="600" Width="800"
         Loaded="Window_Loaded"
-        Unloaded="Window_Unloaded">
+        Unloaded="Window_Unloaded"
+        WindowStartupLocation="CenterScreen">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Principal">
                 <MenuItem Header="Configurações" />
+                <MenuItem Header="Atualizar Dispositivo" Click="HandleAtualizarDispositivoClick" />
                 <Separator />
                 <MenuItem Header="Sair" />
             </MenuItem>
@@ -20,15 +22,12 @@
             </MenuItem>
         </Menu>
         <StatusBar DockPanel.Dock="Bottom">
-            <Grid Margin="1,1,1,1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
+            <StatusBarItem Name="sbiProgress" Visibility="{Binding Visibility, Mode=OneWay}" Margin="2,4,2,1">
                 <WrapPanel>
-                    <TextBlock Text="" />
+                    <ProgressBar Width="30" IsIndeterminate="True" />
+                    <TextBlock Margin="8,0,0,0" Text="{Binding ProgressText}" />
                 </WrapPanel>
-            </Grid>
+            </StatusBarItem>
         </StatusBar>
         <TabControl Margin="5,5,5,5"
                 TabStripPlacement="Left">
@@ -134,8 +133,8 @@
                                                 <ColumnDefinition Width="*" />
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
-                                            <Button Grid.Column="0" Padding="10,3,10,3" Content="{Binding Key}" Margin="5,1,10,1"/>
-                                            <TextBlock Grid.Column="1" Text="{Binding Verse}" VerticalAlignment="Center" />
+                                            <Button Grid.Column="0" Padding="10,3,10,3" Content="{Binding Key}" Margin="5,1,10,1" Click="HandleKeyClick"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding ShortFormattedVerse}" VerticalAlignment="Center"/>
                                         </Grid>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>

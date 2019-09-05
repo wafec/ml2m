@@ -26,7 +26,18 @@ namespace ML2M.Model
                 else
                     _fontSize = value;
                 if (PropertyChanged != null)
+                {
                     PropertyChanged(this, new PropertyChangedEventArgs("FontSize"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("SmallFontSize"));
+                }
+            }
+        }
+
+        public int SmallFontSize
+        {
+            get
+            {
+                return (int) Math.Ceiling(FontSize * 0.7);
             }
         }
 

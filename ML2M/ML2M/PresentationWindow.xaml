@@ -10,14 +10,15 @@
         SizeChanged="Window_SizeChanged"
         StateChanged="Window_StateChanged"
         Unloaded="Window_Unloaded"
+        LocationChanged="Window_LocationChanged"
         Background="Black">
     <Grid Name="gPresentation">
         <Grid Panel.ZIndex="1000">
             <StackPanel VerticalAlignment="Center" Margin="{Binding Settings.Margin, UpdateSourceTrigger=PropertyChanged}">
-                <TextBlock FontSize="{Binding Settings.FontSize, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                <TextBlock FontSize="{Binding Settings.SmallFontSize, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                            Foreground="Orange"
                            HorizontalAlignment="Center"
-                           Text="{Binding PlayingSong.CurrentSongItem.VerseTip}"
+                           Text="{Binding PlayingSong.CurrentSongItem.FormattedVerseTip}"
                            FontFamily="{StaticResource Rodina}"
                            FontWeight="Bold"
                            Visibility="{Binding Settings.TipVisibility}">
@@ -36,7 +37,7 @@
                        HorizontalAlignment="Center"
                        TextWrapping="Wrap" TextAlignment="Center"
                        Text="{Binding PlayingSong.CurrentSongItem.FormattedVerse}"
-                       FontFamily="{StaticResource Aleo}"
+                       FontFamily="{StaticResource Lemonmilk}"
                        FontStyle="Italic"
                        FontWeight="Bold">
                     <TextBlock.Effect>
@@ -50,7 +51,7 @@
                 </TextBlock>
             </StackPanel>
         </Grid>
-        <MediaElement Name="mePresentation" Stretch="UniformToFill" LoadedBehavior="Play">
+        <MediaElement Name="mePresentation" Stretch="UniformToFill" LoadedBehavior="Play" IsMuted="True">
             <MediaElement.Triggers>
                 <EventTrigger RoutedEvent="MediaElement.Loaded">
                     <EventTrigger.Actions>

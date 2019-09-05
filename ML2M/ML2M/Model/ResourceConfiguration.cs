@@ -53,12 +53,12 @@ namespace ML2M.Model
 
         private static string GetDefaultSettingsPath()
         {
-            return Path.Combine(Directory.GetCurrentDirectory(), "settings.json");
+            return Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), "Data"), "Settings.json");
         }
 
         public void Save()
         {
-            string settingsContent = JsonConvert.SerializeObject(this);
+            string settingsContent = JsonConvert.SerializeObject(this, Formatting.Indented);
             File.WriteAllText(GetDefaultSettingsPath(), settingsContent);
         }
 

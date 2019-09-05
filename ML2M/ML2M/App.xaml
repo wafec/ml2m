@@ -7,5 +7,6 @@
         <FontFamily x:Key="Rodina">pack://application:,,,/Fonts/#Rodina</FontFamily>
         <FontFamily x:Key="SkolaSans">pack://application:,,,/Fonts/#SkolaSans</FontFamily>
         <FontFamily x:Key="Aleo">pack://application:,,,/Fonts/#Aleo</FontFamily>
+        <FontFamily x:Key="Lemonmilk">pack://application:,,,/Fonts/#LemonMilk</FontFamily>
     </Application.Resources>
 </Application>

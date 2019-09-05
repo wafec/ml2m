@@ -13,6 +13,8 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -80,6 +82,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\MainProgressControl.cs" />
     <Compile Include="Model\PlayingSong.cs" />
     <Compile Include="Model\PresentationSettings.cs" />
     <Compile Include="Model\ResourceConfiguration.cs" />
@@ -87,6 +90,7 @@
     <Compile Include="Model\SongItem.cs" />
     <Compile Include="Model\SongList.cs" />
     <Compile Include="Model\SongListItem.cs" />
+    <Compile Include="Model\StateConfiguration.cs" />
     <Compile Include="PresentationWindow.xaml.cs">
       <DependentUpon>PresentationWindow.xaml</DependentUpon>
     </Compile>
@@ -124,6 +128,13 @@
     <Resource Include="Fonts\Aleo-Light.otf" />
     <Resource Include="Fonts\Aleo-LightItalic.otf" />
     <Resource Include="Fonts\Aleo-Regular.otf" />
+    <Resource Include="Fonts\BebasNeue-Regular.ttf" />
+    <Resource Include="Fonts\LemonMilk.otf" />
+    <Resource Include="Fonts\LemonMilkbold.otf" />
+    <Resource Include="Fonts\LemonMilkbolditalic.otf" />
+    <Resource Include="Fonts\LemonMilkitalic.otf" />
+    <Resource Include="Fonts\LemonMilklight.otf" />
+    <Resource Include="Fonts\LemonMilklightitalic.otf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

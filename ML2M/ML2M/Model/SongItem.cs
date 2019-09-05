@@ -20,5 +20,32 @@ namespace ML2M.Model
                 return "";
             }
         }
+
+        public string ShortFormattedVerse
+        {
+            get
+            {
+                if (Verse != null)
+                {
+                    int n = 40;
+                    string verse = Verse.Replace("|", " ");
+                    if (verse.Length < n)
+                        return verse;
+                    else
+                        return verse.Substring(0, n) + "...";
+                }
+                return "";
+            }
+        }
+
+        public string FormattedVerseTip
+        {
+            get
+            {
+                if (VerseTip != null)
+                    return VerseTip.ToUpperInvariant();
+                return "";
+            }
+        }
     }
 }
