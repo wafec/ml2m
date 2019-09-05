@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Windows;
 
 namespace ML2M.Model
 {
@@ -10,6 +11,7 @@ namespace ML2M.Model
     {
         private int _fontSize = 30;
         private string _margin = "5,5,5,5";
+        private Visibility _tipVisibility = Visibility.Hidden;
 
         public int FontSize
         {
@@ -42,6 +44,20 @@ namespace ML2M.Model
                     _margin = value;
                 if (PropertyChanged != null)
                     PropertyChanged(this, new PropertyChangedEventArgs("Margin"));
+            }
+        }
+
+        public Visibility TipVisibility
+        {
+            get
+            {
+                return _tipVisibility;
+            }
+            set
+            {
+                _tipVisibility = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("TipVisibility"));
             }
         }
 

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 
 namespace ML2M.Controllers
 {
@@ -18,5 +19,7 @@ namespace ML2M.Controllers
         void Subscribe(IPresentationSubscriber presentationSubscriber);
         void Unsubscribe(IPresentationSubscriber presentationSubscriber);
         SongItem GetCurrentSongItem();
+        void SetKeyEvents(FrameworkElement element);
+        void ChangeBackgroundVideoRandomly();
     }
 }

@@ -13,6 +13,7 @@ namespace ML2M.Controllers
         Previous,
         NextKey,
         NextLine,
-        NewSong
+        NewSong,
+        ChangeBackgroundVideo
     }
 }

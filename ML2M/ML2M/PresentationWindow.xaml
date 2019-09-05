@@ -13,24 +13,42 @@
         Background="Black">
     <Grid Name="gPresentation">
         <Grid Panel.ZIndex="1000">
-            <TextBlock FontSize="{Binding Settings.FontSize, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                       Foreground="White"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"
-                       TextWrapping="Wrap" TextAlignment="Center"
-                       Margin="{Binding Settings.Margin, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
-                       Text="{Binding PlayingSong.CurrentSongItem.FormattedVerse}"
-                       FontFamily="{StaticResource Aleo}"
-                       FontStyle="Italic">
-                <TextBlock.Effect>
-                    <DropShadowEffect 
+            <StackPanel VerticalAlignment="Center" Margin="{Binding Settings.Margin, UpdateSourceTrigger=PropertyChanged}">
+                <TextBlock FontSize="{Binding Settings.FontSize, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                           Foreground="Orange"
+                           HorizontalAlignment="Center"
+                           Text="{Binding PlayingSong.CurrentSongItem.VerseTip}"
+                           FontFamily="{StaticResource Rodina}"
+                           FontWeight="Bold"
+                           Visibility="{Binding Settings.TipVisibility}">
+                    <TextBlock.Effect>
+                        <DropShadowEffect 
                         ShadowDepth="6"
                         Direction="330"
                         Color="Black"
                         Opacity="0.8"
                         BlurRadius="4"/>
-                </TextBlock.Effect>
-            </TextBlock>
+                    </TextBlock.Effect>
+                </TextBlock>
+                <TextBlock FontSize="{Binding Settings.FontSize, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                       Foreground="White"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       TextWrapping="Wrap" TextAlignment="Center"
+                       Text="{Binding PlayingSong.CurrentSongItem.FormattedVerse}"
+                       FontFamily="{StaticResource Aleo}"
+                       FontStyle="Italic"
+                       FontWeight="Bold">
+                    <TextBlock.Effect>
+                        <DropShadowEffect 
+                        ShadowDepth="6"
+                        Direction="330"
+                        Color="Black"
+                        Opacity="0.8"
+                        BlurRadius="4"/>
+                    </TextBlock.Effect>
+                </TextBlock>
+            </StackPanel>
         </Grid>
         <MediaElement Name="mePresentation" Stretch="UniformToFill" LoadedBehavior="Play">
             <MediaElement.Triggers>

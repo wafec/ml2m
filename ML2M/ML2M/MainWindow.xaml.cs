@@ -49,6 +49,7 @@ namespace ML2M
             ResourceConfiguration = ResourceConfiguration.CreateInstance();
 
             PresentationController.Subscribe(this);
+            PresentationController.SetKeyEvents(this);
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -128,6 +129,7 @@ namespace ML2M
                 if (PresentationWindow == null)
                 {
                     PresentationWindow = new PresentationWindow(PresentationController, ResourceConfiguration);
+                    PresentationController.SetKeyEvents(PresentationWindow);
                     PresentationWindow.Show();
                 }
                 PresentationController.ChangeSong(PlayingSong);
@@ -156,6 +158,8 @@ namespace ML2M
                 PresentationWindow = null;
                 PresentationFullScreen = false;
                 PresentationHidden = false;
+                PlayingSong = null;
+                dpPlayingSong.DataContext = null;
                 HandlePresentationWindowButtons();
             }
         }
@@ -219,6 +223,11 @@ namespace ML2M
                 PresentationFullScreen = !PresentationFullScreen;
                 HandlePresentationWindowButtons();
             }
+        }
+
+        private void HandleTrocarVideoClick(object sender, RoutedEventArgs e)
+        {
+            PresentationController.ChangeBackgroundVideoRandomly();
         }
     }
 }

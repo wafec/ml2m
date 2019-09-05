@@ -53,7 +53,7 @@ namespace ML2M.Model
             {
                 var key = Song.Items[index].Key;
                 var item = Song.Items[index];
-                while (item.Key == key && index < Song.Items.Count)
+                while (item.Key == key && index + 1 < Song.Items.Count)
                 {
                     item = Song.Items[++index];
                 }
@@ -61,7 +61,7 @@ namespace ML2M.Model
                 {
                     if (requestedKey != null)
                     {
-                        while (item.Key != requestedKey && index < Song.Items.Count)
+                        while (item.Key != requestedKey && index + 1< Song.Items.Count)
                         {
                             item = Song.Items[++index];
                         }
@@ -69,20 +69,15 @@ namespace ML2M.Model
                         {
                             return index;
                         }
-                        else
-                        {
-                            if (Song.Items.Exists(i => i.Key == requestedKey))
-                            {
-                                item = Song.Items.First(i => i.Key == requestedKey);
-                                return Song.Items.IndexOf(item);
-                            }
-                        }
                     }
                     else
                     {
                         return index;
                     }                    
                 }
+                item = Song.Items.FirstOrDefault(i => i.Key == requestedKey);
+                if (item != null)
+                    return Song.Items.IndexOf(item);
             }
             return -1;
         }

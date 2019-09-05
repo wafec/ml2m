@@ -27,6 +27,7 @@ namespace ML2M
         public PresentationSettings Settings { get; private set; }
         public PlayingSong PlayingSong { get; private set; }
         public Uri MediaSource { get; set; }
+        public List<string> CurrentVideoSelection { get; private set; }
 
         public PresentationWindow(IPresentationController presentationController, ResourceConfiguration resourceConfiguration)
         {
@@ -58,6 +59,45 @@ namespace ML2M
             UpdateFontSize();
         }
 
+        private void ShuffleVideoOptions()
+        {
+            if (!ResourceConfiguration.IsVideosPathValid())
+            {
+                CurrentVideoSelection = new List<string>();
+            }
+            else
+            {
+                var random = new Random();
+                var videos = new List<string>(ResourceConfiguration.GetVideos());
+                var shuffle = new List<string>();
+                while (videos.Count > 0)
+                {
+                    var videoIndex = random.Next(videos.Count);
+                    var video = videos[videoIndex];
+                    shuffle.Add(video);
+                    videos.RemoveAt(videoIndex);
+                }
+                CurrentVideoSelection = shuffle;
+            }            
+        }
+
+        private string GetSelectedVideo()
+        {
+            if (CurrentVideoSelection == null)
+            {
+                ShuffleVideoOptions();
+            }
+            if (CurrentVideoSelection.Count > 0)
+            {
+                var video = CurrentVideoSelection.First();
+                CurrentVideoSelection.RemoveAt(0);
+                if (CurrentVideoSelection.Count == 0)
+                    CurrentVideoSelection = null;
+                return video;
+            }
+            return "";
+        }
+
         private void InitializePlayingVideo()
         {
             if (ResourceConfiguration.IsVideosPathValid())
@@ -65,10 +105,7 @@ namespace ML2M
                 var videos = ResourceConfiguration.GetVideos();
                 if (videos != null && videos.Count > 0)
                 {
-                    Random random = new Random();
-                    var selectedVideoIndex = random.Next(videos.Count);
-                    Console.WriteLine(string.Format("Video: {0}", selectedVideoIndex));
-                    var selectedVideo = videos[selectedVideoIndex];
+                    var selectedVideo = GetSelectedVideo();
                     MediaSource = new Uri(selectedVideo);
                     PropertyChanged(this, new PropertyChangedEventArgs("MediaSource"));
                     sbPresentation.Begin();
@@ -105,6 +142,20 @@ namespace ML2M
                 case PresentationEvents.Stop:
                     Close();
                     break;
+                case PresentationEvents.ChangeBackgroundVideo:
+                    InitializePlayingVideo();
+                    break;
+            }
+            if (pArg != null)
+            {
+                if (!string.IsNullOrEmpty(pArg.CurrentSongItem.VerseTip))
+                {
+                    Settings.TipVisibility = Visibility.Visible;
+                }
+                else
+                {
+                    Settings.TipVisibility = Visibility.Collapsed;
+                }
             }
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs("PlayingSong"));
@@ -116,6 +167,7 @@ namespace ML2M
             {
                 PresentationController.Unsubscribe(this);
                 PresentationController.Stop();
+                sbPresentation.Stop();
             }
         }
     }

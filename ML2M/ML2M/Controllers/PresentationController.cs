@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
+using System.Windows.Input;
 using ML2M.Model;
 
 namespace ML2M.Controllers
@@ -106,6 +108,36 @@ namespace ML2M.Controllers
         {
             if (Subscribers.Contains(presentationSubscriber))
                 Subscribers.Remove(presentationSubscriber);
+        }
+
+        public void SetKeyEvents(FrameworkElement element)
+        {
+            element.KeyDown += new System.Windows.Input.KeyEventHandler(HandleKeyDown);
+        }
+
+        private void HandleKeyDown(object sender, KeyEventArgs e)
+        {
+            if (Keyboard.Modifiers == ModifierKeys.None)
+            {
+                if (e.Key == Key.F)
+                    GoToNext();
+                else if (e.Key == Key.T)
+                    GoToPrevious();
+                else if (e.Key == Key.S)
+                    Stop();
+            }
+            else
+            {
+                if (Keyboard.Modifiers == ModifierKeys.Control)
+                {
+                    GoToByKey(Enum.GetName(typeof(Key), e.Key)[0]);
+                }
+            }
+        }
+
+        public void ChangeBackgroundVideoRandomly()
+        {
+            SendEvent(PresentationEvents.ChangeBackgroundVideo);
         }
     }
 }
