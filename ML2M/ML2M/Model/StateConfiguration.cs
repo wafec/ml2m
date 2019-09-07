@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Windows;
 
 namespace ML2M.Model
 {
@@ -40,19 +41,30 @@ namespace ML2M.Model
 
         public bool IsPresentationWindowPositionUnsure()
         {
-            return PresentationWindowLeft == 0 && PresentationWindowTop == 0;
+            Console.WriteLine(string.Format("{0}, {1}, {2}, {3}, {4}, {5}", SystemParameters.VirtualScreenLeft, 
+                SystemParameters.VirtualScreenTop, SystemParameters.VirtualScreenWidth, SystemParameters.VirtualScreenHeight,
+                PresentationWindowLeft, PresentationWindowTop));
+            if (PresentationWindowLeft < SystemParameters.VirtualScreenLeft)
+                return true;
+            if (PresentationWindowTop < SystemParameters.VirtualScreenTop)
+                return true;
+            if (PresentationWindowLeft > SystemParameters.VirtualScreenLeft + SystemParameters.VirtualScreenWidth)
+                return true;
+            if (PresentationWindowTop > SystemParameters.VirtualScreenTop + SystemParameters.VirtualScreenHeight)
+                return true;
+            return false;
         }
 
         public void UpdatePresentationWindowPosition(double srcX, double srcY, double sourceWidth, double sourceHeight,
-            double destinationWidth, double destinationHeight)
+            double destinationWidth, double destinationHeight, bool force = false)
         {
-            UpdatePresentationWindowPosition((int)srcX, (int)srcY, (int)sourceWidth, (int)sourceHeight, (int)destinationWidth, (int)destinationHeight);
+            UpdatePresentationWindowPosition((int)srcX, (int)srcY, (int)sourceWidth, (int)sourceHeight, (int)destinationWidth, (int)destinationHeight, force);
         }
 
         public void UpdatePresentationWindowPosition(int srcX, int srcY, int sourceWidth, int sourceHeight,
-            int destinationWidth, int destinationHeight)
+            int destinationWidth, int destinationHeight, bool force = false)
         {
-            if (IsPresentationWindowPositionUnsure())
+            if (IsPresentationWindowPositionUnsure() || force)
             {
                 int srcCenterX = (sourceWidth / 2) + srcX;
                 int srcCenterY = (sourceHeight / 2) + srcY;

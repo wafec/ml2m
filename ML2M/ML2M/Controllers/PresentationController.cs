@@ -24,6 +24,19 @@ namespace ML2M.Controllers
             SendEvent(PresentationEvents.NewSong, PlayingSong);
         }
 
+        private bool HandleZeroOnMove()
+        {
+            if (PlayingSong != null)
+            {
+                if (PlayingSong.IsZero)
+                {
+                    PlayingSong.IsZero = false;
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public SongItem GetCurrentSongItem()
         {
             if (PlayingSong != null)
@@ -39,9 +52,10 @@ namespace ML2M.Controllers
                 if (index >= 0)
                 {
                     PlayingSong.SetCurrentSongItem(index);
+                    HandleZeroOnMove();
                     SendEvent(PresentationEvents.NextKey, PlayingSong);
                 }
-            }
+            }            
         }
 
         public void GoToLine(int line)
@@ -51,36 +65,46 @@ namespace ML2M.Controllers
                 var item = PlayingSong.Song.Items.FirstOrDefault(i => i.Line == line);
                 if (item != null)
                     PlayingSong.CurrentSongItem = item;
+                HandleZeroOnMove();
                 SendEvent(PresentationEvents.NextLine, PlayingSong);
-            }
+            }            
         }
 
         public void GoToNext()
-        {
+        {            
             if (PlayingSong != null && PlayingSong.Song.Items != null)
             {
                 var index = PlayingSong.GetCurrentItemIndex();
-                if (index + 1 < PlayingSong.Song.Items.Count)
-                    PlayingSong.CurrentSongItem = PlayingSong.Song.Items[index + 1];
+                var offset = PlayingSong.IsZero ? 0 : 1;
+                if (index + offset < PlayingSong.Song.Items.Count)
+                    PlayingSong.CurrentSongItem = PlayingSong.Song.Items[index + offset];
+                HandleZeroOnMove();
                 SendEvent(PresentationEvents.Next, PlayingSong);
-            }
+            }            
         }
 
         public void GoToPrevious()
         {
-            if (PlayingSong != null && PlayingSong.Song != null && PlayingSong.Song.Items != null)
+            if (PlayingSong != null && PlayingSong.Song != null && PlayingSong.Song.Items != null && !PlayingSong.IsZero)
             {
                 var index = PlayingSong.GetCurrentItemIndex();
-                if (index - 1 >= 0)
-                    PlayingSong.CurrentSongItem = PlayingSong.Song.Items[index - 1];
+                var offset = PlayingSong.IsZero ? 0 : 1;
+                if (index - offset >= 0)
+                {
+                    PlayingSong.CurrentSongItem = PlayingSong.Song.Items[index - offset];
+                    HandleZeroOnMove();
+                }
+                else
+                    PlayingSong.IsZero = true;                
                 SendEvent(PresentationEvents.Previous, PlayingSong);
-            }
+            }            
         }
 
         public void Reset()
         {
             if (PlayingSong != null)
             {
+                PlayingSong.IsZero = true;
                 PlayingSong.CurrentSongItem = null;
                 SendEvent(PresentationEvents.Reset, PlayingSong);
             }
@@ -94,7 +118,7 @@ namespace ML2M.Controllers
 
         private void SendEvent(PresentationEvents presentationEvent, params object[] arg)
         {
-            foreach (var subscriber in Subscribers)
+            foreach (var subscriber in new List<IPresentationSubscriber>(Subscribers))
                 subscriber.HandlePresentationEvent(presentationEvent, arg);
         }
 
@@ -119,11 +143,11 @@ namespace ML2M.Controllers
         {
             if (Keyboard.Modifiers == ModifierKeys.None)
             {
-                if (e.Key == Key.F)
+                if (e.Key == Key.F || e.Key == Key.Right)
                     GoToNext();
-                else if (e.Key == Key.T)
+                else if (e.Key == Key.T || e.Key == Key.Left)
                     GoToPrevious();
-                else if (e.Key == Key.S)
+                else if (e.Key == Key.P || e.Key== Key.Escape)
                     Stop();
             }
             else
@@ -138,6 +162,11 @@ namespace ML2M.Controllers
         public void ChangeBackgroundVideoRandomly()
         {
             SendEvent(PresentationEvents.ChangeBackgroundVideo);
+        }
+
+        public PlayingSong GetSong()
+        {
+            return this.PlayingSong;
         }
     }
 }

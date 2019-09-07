@@ -126,7 +126,7 @@ namespace ML2M
             }
             else
             {
-                HideResults("Não foram encontradas as letras nas configurações atuais.");
+                HideResults("Não foram encontradas letras nas configurações atuais.");
             }
         }
 
@@ -170,6 +170,9 @@ namespace ML2M
                     PresentationWindow.Top = StateConfiguration.PresentationWindowTop;
                     PresentationWindow.Show();
                 }
+                PresentationWindow.Visibility = Visibility.Visible;
+                PresentationHidden = false;
+                HandlePresentationWindowButtons();
                 PresentationController.ChangeSong(PlayingSong);
             }
         }
@@ -224,6 +227,7 @@ namespace ML2M
 
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
+            PresentationController.Unsubscribe(this);
             PresentationController.Stop();
         }
 
@@ -250,8 +254,8 @@ namespace ML2M
             {
                 if (!PresentationFullScreen)
                 {
-                    PresentationWindow.WindowState = WindowState.Maximized;
                     PresentationWindow.WindowStyle = WindowStyle.None;
+                    PresentationWindow.WindowState = WindowState.Maximized;                    
                 }
                 else
                 {
@@ -286,6 +290,18 @@ namespace ML2M
         private void HandleSairClick(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void HandleRecuperarTelaClick(object sender, RoutedEventArgs e)
+        {
+            if (StateConfiguration != null && PresentationWindow != null)
+            {
+                StateConfiguration.UpdatePresentationWindowPosition(Left, Top, ActualWidth, ActualHeight,
+                    PresentationWindow.Width, PresentationWindow.Height, true);
+                PresentationWindow.Left = StateConfiguration.PresentationWindowLeft;
+                PresentationWindow.Top = StateConfiguration.PresentationWindowTop;
+                StateConfiguration.Save();
+            }
         }
     }
 }

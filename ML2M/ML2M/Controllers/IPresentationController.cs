@@ -21,5 +21,6 @@ namespace ML2M.Controllers
         SongItem GetCurrentSongItem();
         void SetKeyEvents(FrameworkElement element);
         void ChangeBackgroundVideoRandomly();
+        PlayingSong GetSong();
     }
 }

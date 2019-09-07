@@ -106,9 +106,9 @@
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <Button Grid.Column="0" Margin="5,0,5,0" Click="HandleTrasClick">Trás</Button>
-                                        <Button Grid.Column="1" Margin="5,0,5,0" Click="HandleFrenteClick">Frente</Button>
-                                        <Button Grid.Column="2" Margin="5,0,5,0" Click="HandlePararClick">Parar</Button>
+                                        <Button Grid.Column="0" Margin="5,0,5,0" Click="HandleTrasClick">Trás (T)</Button>
+                                        <Button Grid.Column="1" Margin="5,0,5,0" Click="HandleFrenteClick">Frente (F)</Button>
+                                        <Button Grid.Column="2" Margin="5,0,5,0" Click="HandlePararClick">Parar (P ou ESC)</Button>
                                     </Grid>
                                 </StackPanel>
                                 <Separator Margin="5,10,5,10" />
@@ -117,24 +117,35 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*" />
                                             <ColumnDefinition Width="*" />
-                                            <ColumnDefinition Width="*" />
                                         </Grid.ColumnDefinitions>
-                                        <Button Grid.Column="0" Margin="5,0,5,0" Click="HandleEsconderMostrarClick" Name="bEsconderMostrar">Esconder</Button>
-                                        <Button Grid.Column="1" Margin="5,0,5,0" Click="HandleTelaCheiaNormalClick" Name="bTelaCheiaNormal">Tela Cheia</Button>
-                                        <Button Grid.Column="2" Margin="5,0,5,0" Click="HandleTrocarVideoClick">Trocar Vídeo</Button>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Button Grid.Column="0" Grid.Row="0" Margin="5,0,5,0" Click="HandleEsconderMostrarClick" Name="bEsconderMostrar">Esconder</Button>
+                                        <Button Grid.Column="1" Grid.Row="0" Margin="5,0,5,0" Click="HandleTelaCheiaNormalClick" Name="bTelaCheiaNormal">Tela Cheia</Button>
+                                        <Button Grid.Column="0" Grid.Row="1" Margin="5,5,5,0" Click="HandleTrocarVideoClick">Próximo Vídeo</Button>
+                                        <Button Grid.Column="1" Grid.Row="1" Margin="5,5,5,0" Click="HandleRecuperarTelaClick">Recuperar Tela</Button>
                                     </Grid>
                                 </StackPanel>
                             </StackPanel>
-                            <ListBox Margin="0,10,0,0" Name="lbKeySongItems" ItemsSource="{Binding KeySongItems}">
+                            <ListBox Margin="0,10,0,0" Name="lbKeySongItems" ItemsSource="{Binding KeySongItems}"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*" />
                                                 <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <Button Grid.Column="0" Padding="10,3,10,3" Content="{Binding Key}" Margin="5,1,10,1" Click="HandleKeyClick"/>
-                                            <TextBlock Grid.Column="1" Text="{Binding ShortFormattedVerse}" VerticalAlignment="Center"/>
+                                            <Button Grid.Column="0" Padding="10,3,10,3" Margin="5,1,10,1" Click="HandleKeyClick"
+                                                    Width="80">
+                                                <WrapPanel>
+                                                    <TextBlock Text="Ctrl+"/>
+                                                    <TextBlock Text="{Binding Key}" />
+                                                </WrapPanel>
+                                            </Button>
+                                            <TextBlock Grid.Column="1" Text="{Binding ShortFormattedVerse}" VerticalAlignment="Center" TextWrapping="NoWrap" TextTrimming="CharacterEllipsis"/>
                                         </Grid>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
