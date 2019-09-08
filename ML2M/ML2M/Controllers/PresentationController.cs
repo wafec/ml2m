@@ -143,9 +143,9 @@ namespace ML2M.Controllers
         {
             if (Keyboard.Modifiers == ModifierKeys.None)
             {
-                if (e.Key == Key.F || e.Key == Key.Right)
+                if (e.Key == Key.F || e.Key == Key.Right || e.Key == Key.PageDown)
                     GoToNext();
-                else if (e.Key == Key.T || e.Key == Key.Left)
+                else if (e.Key == Key.T || e.Key == Key.Left || e.Key == Key.PageUp)
                     GoToPrevious();
                 else if (e.Key == Key.P || e.Key== Key.Escape)
                     Stop();

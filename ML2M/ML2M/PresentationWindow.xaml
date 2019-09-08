@@ -41,7 +41,8 @@
                            Typography.Capitals="AllSmallCaps"
                            FontSize="{Binding Settings.FontSize}"
                            FontFamily="{StaticResource Lemonmilk}" Foreground="White" 
-                           TextWrapping="Wrap" TextAlignment="Center" LineStackingStrategy="BlockLineHeight" LineHeight="{Binding Settings.FontSize}"
+                           TextWrapping="Wrap" TextAlignment="Center"
+                                   LineStackingStrategy="BlockLineHeight" LineHeight="{Binding Settings.FontSize}"
                                    FontWeight="Bold"
                                    VerticalAlignment="Center"
                                    ></TextBlock>
