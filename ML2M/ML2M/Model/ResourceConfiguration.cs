@@ -1,16 +1,60 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
 
 namespace ML2M.Model
 {
-    public class ResourceConfiguration
+    public class ResourceConfiguration : INotifyPropertyChanged
     {
-        public string LyricsPath { get; set; }
-        public string VideosPath { get; set; }
+        private string _lyricsPath;
+        private string _videosPath;
+        private string _imagesPath;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public string LyricsPath
+        {
+            get
+            {
+                return _lyricsPath;
+            }
+            set
+            {
+                _lyricsPath = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("LyricsPath"));
+            }
+        }
+        public string VideosPath
+        {
+            get
+            {
+                return _videosPath;
+            }
+            set
+            {
+                _videosPath = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("VideosPath"));
+            }
+        }
+        public string ImagesPath
+        {
+            get
+            {
+                return _imagesPath;
+            }
+            set
+            {
+                _imagesPath = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("ImagesPath"));
+            }
+        }
 
         public bool IsLyricsPathValid()
         {

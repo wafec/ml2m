@@ -2,6 +2,7 @@
 using ML2M.Model;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -21,9 +22,11 @@ namespace ML2M
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, IPresentationSubscriber
+    public partial class MainWindow : Window, IPresentationSubscriber, INotifyPropertyChanged
     {
         private object _lockObj = new object();
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public IPresentationController PresentationController { get; set; }
         public ISongController SongController { get; set; }
@@ -58,6 +61,11 @@ namespace ML2M
 
             StateConfiguration = StateConfiguration.CreateInstance();
             tbPesquisar.Text = StateConfiguration.Keywords ?? "";
+
+            gPreferences.DataContext = this;
+
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs("ResourceConfiguration"));
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
