@@ -311,5 +311,20 @@ namespace ML2M
                 StateConfiguration.Save();
             }
         }
+
+        private void HandleMudarCaminhoLetrasClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void HandleMudarCaminhoVideosClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void HandleMudarCaminhoImagensClick(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
