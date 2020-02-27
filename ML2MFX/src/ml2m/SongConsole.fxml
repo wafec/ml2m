@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="161.0" prefWidth="258.0" stylesheets="@Songs.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button layoutX="45.0" layoutY="18.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="80.0" styleClass="song-console-button-rounded" text="&lt;" />
+            <Button layoutX="133.0" layoutY="18.0" mnemonicParsing="false" prefHeight="80.0" prefWidth="80.0" styleClass="song-console-button-rounded" text="&gt;" />
+         </children>
+      </AnchorPane>
+   </center>
+   <bottom>
+      <HBox prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <ToggleButton maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Fullscreen" HBox.hgrow="ALWAYS" />
+            <ToggleButton maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Invisível" HBox.hgrow="ALWAYS" />
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Cancelar" HBox.hgrow="ALWAYS" />
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+   </bottom>
+</BorderPane>
