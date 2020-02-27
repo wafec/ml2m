@@ -20,6 +20,7 @@ namespace ML2M.Controllers
                 char? lastUsedKey = null;
                 string lastVerseTip = null;
                 char pKey = 'A';
+                List<char> userDefinedKeys = new List<char>();
                 for (int i = 0; i < lyricLines.Length; i++)
                 {
                     var lyricLine = lyricLines[i];
@@ -40,7 +41,10 @@ namespace ML2M.Controllers
                                 string command = lyricLine.Substring(1, lyricLine.Length - 2);
                                 string[] keyVerseTip = command.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                                 if (keyVerseTip.Length > 0)
+                                {
                                     lastUsedKey = keyVerseTip[0][0];
+                                    userDefinedKeys.Add(lastUsedKey.Value);
+                                }
                                 if (keyVerseTip.Length > 1)
                                     lastVerseTip = keyVerseTip[1];
                                 if (keyVerseTip.Length == 0)
@@ -50,7 +54,23 @@ namespace ML2M.Controllers
                             {
                                 SongItem item = new SongItem();
                                 item.Line = i;
-                                lastUsedKey = item.Key = lastUsedKey ?? pKey++;
+                                if (lastUsedKey == null)
+                                {
+                                    var usedKey = pKey++;
+                                    while (userDefinedKeys.Contains((usedKey)))
+                                    {
+                                        if (pKey >= 'Z')
+                                        {
+                                            pKey = 'A';
+                                            continue;
+                                        }
+                                        pKey++;
+                                    }
+                                    lastUsedKey = item.Key = usedKey;
+                                } else
+                                {
+                                    item.Key = lastUsedKey.Value;
+                                }
                                 item.VerseTip = lastVerseTip ?? "";
                                 item.Verse = lyricLine;
 

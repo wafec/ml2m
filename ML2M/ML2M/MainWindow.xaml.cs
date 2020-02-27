@@ -2,6 +2,7 @@
 using ML2M.Model;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -21,9 +22,11 @@ namespace ML2M
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, IPresentationSubscriber
+    public partial class MainWindow : Window, IPresentationSubscriber, INotifyPropertyChanged
     {
         private object _lockObj = new object();
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public IPresentationController PresentationController { get; set; }
         public ISongController SongController { get; set; }
@@ -58,6 +61,11 @@ namespace ML2M
 
             StateConfiguration = StateConfiguration.CreateInstance();
             tbPesquisar.Text = StateConfiguration.Keywords ?? "";
+
+            gPreferences.DataContext = this;
+
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs("ResourceConfiguration"));
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -126,7 +134,7 @@ namespace ML2M
             }
             else
             {
-                HideResults("Não foram encontradas as letras nas configurações atuais.");
+                HideResults("Não foram encontradas letras nas configurações atuais.");
             }
         }
 
@@ -170,6 +178,9 @@ namespace ML2M
                     PresentationWindow.Top = StateConfiguration.PresentationWindowTop;
                     PresentationWindow.Show();
                 }
+                PresentationWindow.Visibility = Visibility.Visible;
+                PresentationHidden = false;
+                HandlePresentationWindowButtons();
                 PresentationController.ChangeSong(PlayingSong);
             }
         }
@@ -224,6 +235,7 @@ namespace ML2M
 
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
+            PresentationController.Unsubscribe(this);
             PresentationController.Stop();
         }
 
@@ -250,8 +262,8 @@ namespace ML2M
             {
                 if (!PresentationFullScreen)
                 {
-                    PresentationWindow.WindowState = WindowState.Maximized;
                     PresentationWindow.WindowStyle = WindowStyle.None;
+                    PresentationWindow.WindowState = WindowState.Maximized;                    
                 }
                 else
                 {
@@ -286,6 +298,33 @@ namespace ML2M
         private void HandleSairClick(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void HandleRecuperarTelaClick(object sender, RoutedEventArgs e)
+        {
+            if (StateConfiguration != null && PresentationWindow != null)
+            {
+                StateConfiguration.UpdatePresentationWindowPosition(Left, Top, ActualWidth, ActualHeight,
+                    PresentationWindow.Width, PresentationWindow.Height, true);
+                PresentationWindow.Left = StateConfiguration.PresentationWindowLeft;
+                PresentationWindow.Top = StateConfiguration.PresentationWindowTop;
+                StateConfiguration.Save();
+            }
+        }
+
+        private void HandleMudarCaminhoLetrasClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void HandleMudarCaminhoVideosClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void HandleMudarCaminhoImagensClick(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

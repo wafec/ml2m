@@ -13,25 +13,107 @@
         LocationChanged="Window_LocationChanged"
         Background="Black">
     <Grid Name="gPresentation">
-        <Grid Panel.ZIndex="1000">
-            <StackPanel VerticalAlignment="Center" Margin="{Binding Settings.Margin, UpdateSourceTrigger=PropertyChanged}">
-                <TextBlock FontSize="{Binding Settings.SmallFontSize, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+        <Grid Panel.ZIndex="1000" Name="gTitle" Visibility="{Binding Settings.TitleVisibility}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" VerticalAlignment="Center">
+                <Grid.Background>
+                    <SolidColorBrush Opacity="0.5" Color="Black" />
+                </Grid.Background>
+                <Grid HorizontalAlignment="Center" Margin="20,30,20,30">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Ellipse Grid.Column="0" Grid.Row="0" StrokeThickness="10">
+                        <Ellipse.Fill>
+                            <SolidColorBrush Opacity="0.3" Color="DarkMagenta" />
+                        </Ellipse.Fill>
+                        <Ellipse.Stroke>
+                            <SolidColorBrush Opacity="0.2" Color="White" />
+                        </Ellipse.Stroke>
+                    </Ellipse>
+                    <StackPanel Grid.Row="0" Grid.Column="0">
+                        <TextBlock Name="tbTitle" Text="{Binding PlayingSong.Song.VerticalName}" 
+                           Typography.Capitals="AllSmallCaps"
+                           FontSize="{Binding Settings.FontSize}"
+                           FontFamily="{StaticResource Lemonmilk}" Foreground="White" 
+                           TextWrapping="Wrap" TextAlignment="Center"
+                                   LineStackingStrategy="BlockLineHeight" LineHeight="{Binding Settings.FontSize}"
+                                   FontWeight="Bold"
+                                   VerticalAlignment="Center"
+                                   ></TextBlock>
+                        <TextBlock Text="{Binding PlayingSong.Song.Album}" 
+                                   FontSize="{Binding Settings.SubFontSize}"
+                                   FontFamily="{StaticResource Lemonmilk}"
+                                   FontWeight="Bold"
+                                   Foreground="Orange"
+                                   VerticalAlignment="Center"
+                                   TextAlignment="center"
+                                   Typography.Capitals="AllSmallCaps"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Grid>
+        <Grid Panel.ZIndex="1000" Visibility="{Binding Settings.SlidesVisibility}" Name="gSlides">
+            <StackPanel VerticalAlignment="Center">
+                <StackPanel.Background>
+                    <SolidColorBrush Opacity="0.5" Color="Black" />
+                </StackPanel.Background>
+                <StackPanel Margin="{Binding Settings.Margin, UpdateSourceTrigger=PropertyChanged}">
+                    <Grid>
+                        <TextBlock Grid.Row="0" Grid.Column="0" FontSize="{Binding Settings.SmallFontSize, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                           Foreground="Black"
+                           HorizontalAlignment="Center"
+                           Text="{Binding PlayingSong.CurrentSongItem.FormattedVerseTip}"
+                           FontFamily="{StaticResource Rodina}"
+                           FontWeight="Bold"
+                           Visibility="{Binding Settings.TipVisibility}">
+                            <TextBlock.Effect>
+                                <BlurEffect 
+                                Radius="8.0"
+                                KernelType="Box"
+                                />
+                            </TextBlock.Effect>
+                        </TextBlock>
+                        <TextBlock Grid.Row="0" Grid.Column="0" FontSize="{Binding Settings.SmallFontSize, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                            Foreground="Orange"
                            HorizontalAlignment="Center"
                            Text="{Binding PlayingSong.CurrentSongItem.FormattedVerseTip}"
                            FontFamily="{StaticResource Rodina}"
                            FontWeight="Bold"
                            Visibility="{Binding Settings.TipVisibility}">
-                    <TextBlock.Effect>
-                        <DropShadowEffect 
+                            <TextBlock.Effect>
+                                <DropShadowEffect 
                         ShadowDepth="6"
                         Direction="330"
                         Color="Black"
                         Opacity="0.8"
                         BlurRadius="4"/>
-                    </TextBlock.Effect>
-                </TextBlock>
-                <TextBlock FontSize="{Binding Settings.FontSize, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                            </TextBlock.Effect>
+                        </TextBlock>
+                    </Grid>
+                    <Grid>
+                        <TextBlock Grid.Column="0" Grid.Row="0" FontSize="{Binding Settings.FontSize, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                       Foreground="Black"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       TextWrapping="Wrap" TextAlignment="Center"
+                       Text="{Binding PlayingSong.CurrentSongItem.FormattedVerse}"
+                       FontFamily="{StaticResource Lemonmilk}"
+                       FontStyle="Italic"
+                       FontWeight="Bold">
+                            <TextBlock.Effect>
+                                <BlurEffect 
+                                Radius="8.0"                                
+                                KernelType="Box"
+                                />
+                            </TextBlock.Effect>
+                        </TextBlock>
+                        <TextBlock Grid.Column="0" Grid.Row="0" FontSize="{Binding Settings.FontSize, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                        Foreground="White"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
@@ -40,15 +122,17 @@
                        FontFamily="{StaticResource Lemonmilk}"
                        FontStyle="Italic"
                        FontWeight="Bold">
-                    <TextBlock.Effect>
-                        <DropShadowEffect 
+                            <TextBlock.Effect>
+                                <DropShadowEffect 
                         ShadowDepth="6"
                         Direction="330"
                         Color="Black"
                         Opacity="0.8"
                         BlurRadius="4"/>
-                    </TextBlock.Effect>
-                </TextBlock>
+                            </TextBlock.Effect>
+                        </TextBlock>
+                    </Grid>
+                </StackPanel>             
             </StackPanel>
         </Grid>
         <MediaElement Name="mePresentation" Stretch="UniformToFill" LoadedBehavior="Play" IsMuted="True">

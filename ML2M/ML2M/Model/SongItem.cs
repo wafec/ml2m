@@ -27,7 +27,7 @@ namespace ML2M.Model
             {
                 if (Verse != null)
                 {
-                    int n = 40;
+                    int n = 2000;
                     string verse = Verse.Replace("|", " ");
                     if (verse.Length < n)
                         return verse;

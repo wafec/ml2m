@@ -12,6 +12,8 @@ namespace ML2M.Model
         private int _fontSize = 30;
         private string _margin = "5,5,5,5";
         private Visibility _tipVisibility = Visibility.Hidden;
+        private Visibility _titleVisibility = Visibility.Visible;
+        private Visibility _slidesVisibility = Visibility.Collapsed;
 
         public int FontSize
         {
@@ -29,6 +31,7 @@ namespace ML2M.Model
                 {
                     PropertyChanged(this, new PropertyChangedEventArgs("FontSize"));
                     PropertyChanged(this, new PropertyChangedEventArgs("SmallFontSize"));
+                    PropertyChanged(this, new PropertyChangedEventArgs("SubFontSize"));
                 }
             }
         }
@@ -38,6 +41,14 @@ namespace ML2M.Model
             get
             {
                 return (int) Math.Ceiling(FontSize * 0.7);
+            }
+        }
+
+        public int SubFontSize
+        {
+            get
+            {
+                return (int)Math.Ceiling(FontSize * 0.5);
             }
         }
 
@@ -72,13 +83,41 @@ namespace ML2M.Model
             }
         }
 
+        public Visibility TitleVisibility
+        {
+            get
+            {
+                return _titleVisibility;
+            }
+            set
+            {
+                _titleVisibility = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("TitleVisibility"));
+            }
+        }
+
+        public Visibility SlidesVisibility
+        {
+            get
+            {
+                return _slidesVisibility;
+            }
+            set
+            {
+                _slidesVisibility = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("SlidesVisibility"));
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void Update(int width, int height)
         {
             FontSize = (int) (Math.Sqrt(Math.Pow(width, 2) + Math.Pow(height, 2)) * 0.065);
             int margin = (int)(width * 0.1);
-            Margin = string.Format("{0},5,{0},5", margin);
+            Margin = string.Format("{0},30,{0},30", margin);
             Console.WriteLine(Margin);
         }
 

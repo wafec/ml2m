@@ -10,6 +10,7 @@ namespace ML2M.Model
         public Song Song { get; set; }
         public List<SongItem> KeySongItems { get; set; }
         public SongItem CurrentSongItem { get; set; }
+        public bool IsZero { get; set; }
 
         public static PlayingSong CreateInstance(Song song)
         {
@@ -17,7 +18,8 @@ namespace ML2M.Model
             {
                 Song = song,
                 KeySongItems = new List<SongItem>(),
-                CurrentSongItem = song.Items.First()
+                CurrentSongItem = song.Items.First(),
+                IsZero = true
             };
             char? lastKey = null;
             foreach (var item in song.Items)

@@ -29,6 +29,8 @@ namespace ML2M
         public Uri MediaSource { get; set; }
         public List<string> CurrentVideoSelection { get; private set; }
         public StateConfiguration StateConfiguration { get; private set; }
+        private bool _servicesStopped = false;
+        private object _lock = new object();
 
         public PresentationWindow(IPresentationController presentationController, ResourceConfiguration resourceConfiguration, StateConfiguration stateConfiguration)
         {
@@ -142,6 +144,7 @@ namespace ML2M
                     InitializePlayingVideo();
                     break;
                 case PresentationEvents.Stop:
+                    StopExecutingEverythingDueClosingEvent();
                     Close();
                     break;
                 case PresentationEvents.ChangeBackgroundVideo:
@@ -158,19 +161,40 @@ namespace ML2M
                 {
                     Settings.TipVisibility = Visibility.Collapsed;
                 }
+                if (pArg.IsZero)
+                {
+                    Settings.TitleVisibility = Visibility.Visible;
+                    Settings.SlidesVisibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    Settings.TitleVisibility = Visibility.Collapsed;
+                    Settings.SlidesVisibility = Visibility.Visible;
+                }
             }
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs("PlayingSong"));
         }
 
+        private void StopExecutingEverythingDueClosingEvent()
+        {
+            lock(_lock)
+            {
+                if (PresentationController != null && !_servicesStopped)
+                {
+                    PresentationController.Unsubscribe(this);
+                    PresentationController.Stop();
+                    sbPresentation.Stop();
+                    WindowState = WindowState.Normal;
+                    WindowStyle = WindowStyle.ThreeDBorderWindow;
+                    _servicesStopped = true;
+                }
+            }            
+        }
+
         private void Window_Unloaded(object sender, RoutedEventArgs e)
         {
-            if (PresentationController != null)
-            {
-                PresentationController.Unsubscribe(this);
-                PresentationController.Stop();
-                sbPresentation.Stop();
-            }
+            StopExecutingEverythingDueClosingEvent();
         }
 
         private void Window_LocationChanged(object sender, EventArgs e)

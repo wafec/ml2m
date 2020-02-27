@@ -21,6 +21,31 @@ namespace ML2M.Model
             }
         }
 
+        public string VerticalName
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(Name))
+                {
+                    var parts = Name.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (parts.Length > 3 || true || (Name.Length > 20 && parts.Length == 3))
+                    {
+                        var i = (int)Math.Ceiling(parts.Length / 2.0);
+                        var j = i;
+                        return string.Format("{0}\n{1}",
+                            string.Join(" ", parts.Take(i)),
+                            string.Join(" ", parts.Skip(j))
+                            );                        
+                    }
+                    else
+                    {
+                        return Name;
+                    }
+                }
+                return "";
+            }
+        }
+
         public bool IsValid()
         {
             return !string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Album) && Items != null && Items.Count > 0;
